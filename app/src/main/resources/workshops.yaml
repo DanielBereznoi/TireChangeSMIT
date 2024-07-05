@@ -1,0 +1,29 @@
+workshops:
+  - name: Manchester
+    address: 14 Bury New Rd, Manchester
+    baseUrl: http://localhost:9004/api/v2
+    vehicleTypes:
+      - Sõiduauto
+      - Veoauto
+    getUrl: /tire-change-times
+    putUrl: /tire-change-times/{id}/booking
+    responseFormat: JSON
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy confirmation
+    avilableKey: available
+    idKey: id
+    timeKey: time
+
+  - name: London
+    baseUrl: http://localhost:9003/api/v1
+    address: 1A Gunton Rd, London
+    vehicleTypes:
+      - "Sõiduauto"
+    getUrl: /tire-change-times/available
+    putUrl: /tire-change-times/{id}/booking
+    responseFormat: XML
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy confirmation
+    avilableKey: null
+    idKey: uuid
+    timeKey: time
