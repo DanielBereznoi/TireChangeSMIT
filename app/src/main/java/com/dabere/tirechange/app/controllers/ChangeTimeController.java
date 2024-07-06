@@ -2,7 +2,10 @@ package com.dabere.tirechange.app.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.services.TireChangeService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +24,8 @@ public class ChangeTimeController {
     }
 
     @GetMapping("free-times")
-    public String getAllFreeTimes() {
-        tireChangeService.getAllAvailableTimes();
-        return "No Times Available";
+    public List<Appointment> getAllFreeTimes() {
+        return tireChangeService.getAllAvailableTimes();
     }
     
 

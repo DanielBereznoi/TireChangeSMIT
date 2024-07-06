@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WorkshopListConfig {
-private List<WorkshopConfig> workshops;
-    public List<WorkshopConfig> getWorkshops() {
+private List<Workshop> workshops;
+    public List<Workshop> getWorkshops() {
         return workshops;
     }
 
-    public void setWorkshops(List<WorkshopConfig> workshops) {
+    public void setWorkshops(List<Workshop> workshops) {
         this.workshops = workshops;
     }
 }

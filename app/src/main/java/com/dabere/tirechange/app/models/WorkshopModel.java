@@ -1,4 +1,4 @@
-package com.dabere.tirechange.models;
+package com.dabere.tirechange.app.models;
 
 import java.util.List;
 
@@ -15,5 +15,4 @@ public class WorkshopModel {
     private String name;
     private String address;
     private List<String> vehicleTypes;
-    private List<String[]> timesAndIds;
 }

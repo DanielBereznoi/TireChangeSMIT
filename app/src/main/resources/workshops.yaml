@@ -6,11 +6,12 @@ workshops:
       - Sõiduauto
       - Veoauto
     getUrl: /tire-change-times
-    putUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestType: POST
     responseFormat: JSON
     # Below are the keys needed for the app to retrieve data from the responses
-    # Write null if there is no need for vacancy confirmation
-    avilableKey: available
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: available
     idKey: id
     timeKey: time
 
@@ -20,10 +21,12 @@ workshops:
     vehicleTypes:
       - "Sõiduauto"
     getUrl: /tire-change-times/available
-    putUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestType: POST
     responseFormat: XML
     # Below are the keys needed for the app to retrieve data from the responses
-    # Write null if there is no need for vacancy confirmation
-    avilableKey: null
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: null
     idKey: uuid
     timeKey: time
+    
