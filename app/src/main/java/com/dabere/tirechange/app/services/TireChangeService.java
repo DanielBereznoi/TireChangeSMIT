@@ -30,24 +30,28 @@ public class TireChangeService {
 
     private List<Workshop> workshops;
 
+    private static final String END_DATETIME = "2040-01-01";
+
     public List<Appointment> getAllAvailableTimes() {
-        if (workshops == null) {
+
             loadWorkshops();
-        }
 
         String currentDate = java.time.LocalDate.now().toString();
-        String endDate = "2040-01-01";
         List<Appointment> appointments = new ArrayList<>();
 
         workshops.forEach(workshop -> {
-            appointments.addAll(findTimes(workshop, currentDate, endDate));
+            if (!workshop.isTestive()) {
+                System.out.println(workshop.toString());
+                appointments.addAll(findTimes(workshop, currentDate));
+            }
+            
         });
         return appointments;
     }
 
 
 
-    public List<Appointment> findTimes(Workshop workshop, String from, String until) {
+    public List<Appointment> findTimes(Workshop workshop, String from) {
         List<Appointment> workshopAppointments = new ArrayList<>();
         List<HashMap<String, String>> rawAppointmentData = new ArrayList<>();
 
@@ -57,7 +61,7 @@ public class TireChangeService {
 
         String response = client.get()
                 .uri(UriBuilder -> UriBuilder.path(workshop.getGetUrl()).queryParam("from", from)
-                        .queryParam("until", until)
+                        .queryParam("until", END_DATETIME)
                         .build())
                 .retrieve()
                 .bodyToMono(String.class)
@@ -97,7 +101,7 @@ public class TireChangeService {
     }
 
    public boolean isAppointmentAvailable(HashMap<String, String> raw, String availableKey) {
-        return !("false".equals(raw.getOrDefault(availableKey, "true")));
+        return !("false".equals(raw.get(availableKey)));
     }
 
     private void loadWorkshops() {
