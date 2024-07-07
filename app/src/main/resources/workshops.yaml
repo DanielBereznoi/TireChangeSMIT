@@ -1,0 +1,66 @@
+workshops:
+  - name: Test JSON
+    address: test address
+    baseUrl: http://localhost:0000/api/test
+    vehicleTypes:
+      - Sõiduauto
+      - Veoauto
+    getUrl: /test-url
+    reservationHttpRequestUrl: /test-url/{id}/booking
+    reservationHttpRequestType: POST
+    responseFormat: JSON
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: available
+    idKey: id
+    timeKey: time
+    isTestive: true
+
+  - name: Test XML
+    address: test address
+    baseUrl: http://localhost:0000/api/test
+    vehicleTypes:
+      - Sõiduauto
+      - Veoauto
+    getUrl: /test-url
+    reservationHttpRequestUrl: /test-url/{id}/booking
+    reservationHttpRequestType: POST
+    responseFormat: XML
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: null
+    idKey: uuid
+    timeKey: time
+    isTestive: true
+
+  - name: Manchester
+    address: 14 Bury New Rd, Manchester
+    baseUrl: http://localhost:9004/api/v2
+    vehicleTypes:
+      - Sõiduauto
+      - Veoauto
+    getUrl: /tire-change-times
+    reservationHttpRequestUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestType: POST
+    responseFormat: JSON
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: available
+    idKey: id
+    timeKey: time
+
+  - name: London
+    baseUrl: http://localhost:9003/api/v1
+    address: 1A Gunton Rd, London
+    vehicleTypes:
+      - "Sõiduauto"
+    getUrl: /tire-change-times/available
+    reservationHttpRequestUrl: /tire-change-times/{id}/booking
+    reservationHttpRequestType: POST
+    responseFormat: XML
+    # Below are the keys needed for the app to retrieve data from the responses
+    # Write null if there is no need for vacancy verification otherwise write availability value key here
+    availableKey: null
+    idKey: uuid
+    timeKey: time
+    
