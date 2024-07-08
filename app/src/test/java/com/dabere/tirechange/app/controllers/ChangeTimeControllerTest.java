@@ -28,7 +28,7 @@ public class ChangeTimeControllerTest {
 
     @Test
     void testGetAllFreeTimes() throws Exception {
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/free-times")).andExpect(status().isOk())
+        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/appointments")).andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         List<Appointment> appointments = objectMapper.readValue(contentAsString, new TypeReference<List<Appointment>>() {});
@@ -36,9 +36,4 @@ public class ChangeTimeControllerTest {
         assertTrue(appointments.size()>1);
     }
 
-    @Test
-    void testGreet() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/"))
-        .andExpect(status().isOk()).andReturn();
-    }
 }

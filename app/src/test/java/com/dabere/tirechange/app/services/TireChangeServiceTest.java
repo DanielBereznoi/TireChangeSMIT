@@ -52,7 +52,8 @@ public class TireChangeServiceTest {
     @Test
     void testFindTimes() {
         LocalDate localDate = LocalDate.now();
-        List<Appointment> appointments = service.findTimes(workshop, localDate.toString());
+        String endTime = "2040-01-01";
+        List<Appointment> appointments = service.findTimes(workshop, localDate.toString(), endTime);
         assertNotNull(appointments);
 
         Appointment appointment = appointments.get(0);
@@ -61,11 +62,12 @@ public class TireChangeServiceTest {
         assertNotNull(appointment.getWorkshopAddress());
         assertNotNull(appointment.getAppointmentTime());
         assertNotNull(appointment.getAppointmentDate());
+        assertNotNull(appointment.getVehicleTypes());
 
         workshop.setResponseFormat("MUSTFAIL");
         UnsupportedHttpResponseFormat exception = assertThrows(
                 UnsupportedHttpResponseFormat.class,
-                () -> service.findTimes(workshop, localDate.toString()));
+                () -> service.findTimes(workshop, localDate.toString(), endTime));
         assertEquals(
                 "MUSTFAIL is not supported Http response format. Make sure that you chose either JSON or XML format.",
                 exception.getMessage());
@@ -80,6 +82,7 @@ public class TireChangeServiceTest {
         assertNotNull(appointment.getWorkshopAddress());
         assertNotNull(appointment.getAppointmentTime());
         assertNotNull(appointment.getAppointmentDate());
+        assertNotNull(appointment.getVehicleTypes());
         
     }
 
@@ -121,6 +124,7 @@ public class TireChangeServiceTest {
         assertEquals("2024-06-28", appointment.getAppointmentDate());
         assertEquals("07:00", appointment.getAppointmentTime());
         assertEquals("1", appointment.getAppointmentId());
+        assertTrue(appointment.getVehicleTypes().contains("Sõiduauto"));
 
     }
 }
