@@ -64,6 +64,7 @@ public class TireChangeService {
                 .baseUrl(workshop.getBaseUrl())
                 .build();
 
+        // TODO Make "from" and "until" parameter names be configurable from config block. Check if they are even needed.
         String response = client.get()
                 .uri(UriBuilder -> UriBuilder.path(workshop.getGetUrl()).queryParam("from", from)
                         .queryParam("until", until)
@@ -83,7 +84,7 @@ public class TireChangeService {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
-            // TODO: handle exception
+        
         }
 
         rawAppointmentData.forEach(raw -> {
@@ -136,6 +137,7 @@ public class TireChangeService {
             List<String> workshopAddresses = searchFilterData.getWorkshopAddresses();
             List<String> vehicleTypes = searchFilterData.getVehicleTypes();
             loadWorkshops();
+            System.out.println(vehicleTypes.toString());
             String startDate = (from != null) ? from : java.time.LocalDate.now().toString();
             String endTime = (until != null) ? until : END_DATETIME;
     
@@ -144,8 +146,8 @@ public class TireChangeService {
             System.out.println(endTime);
             workshops.forEach(workshop -> {
                 if (!workshop.isTestive()
-                        && (workshopAddresses == null || workshopAddresses.contains(workshop.getAddress()))
-                        && (vehicleTypes == null || workshop.getVehicleTypes().containsAll(vehicleTypes))) {
+                        && (workshopAddresses == null || workshopAddresses.isEmpty() || workshopAddresses.contains(workshop.getAddress()))
+                        && (vehicleTypes == null || vehicleTypes.isEmpty() || workshop.getVehicleTypes().containsAll(vehicleTypes))) {
                     appointments.addAll(findTimes(workshop, startDate, endTime));
                 }
             });

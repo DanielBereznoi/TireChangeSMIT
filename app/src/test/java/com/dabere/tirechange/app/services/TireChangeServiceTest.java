@@ -21,6 +21,7 @@ import org.springframework.cglib.core.Local;
 
 import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.entities.Workshop;
+import com.dabere.tirechange.app.exceptions.CorruptedSearchFilterDataException;
 import com.dabere.tirechange.app.exceptions.UnsupportedHttpResponseFormat;
 
 @SpringBootTest
@@ -127,4 +128,24 @@ public class TireChangeServiceTest {
         assertTrue(appointment.getVehicleTypes().contains("Sõiduauto"));
 
     }
+
+    @Test
+    void getFilteredAppointmentTimes() {
+        String encodedWithVehicleTypes = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%5D%2C%22vehicleTypes%22%3A%5B%22Veoauto%22%5D%7D";
+        String encodedWithAddress = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%221A%20Gunton%20Rd%2C%20London%22%5D%2C%22vehicleTypes%22%3A%5B%5D%7D";
+        List<Appointment> appointments = service.getFilteredAppointmentTimes(encodedWithVehicleTypes);
+        assertNotNull(appointments);
+        Appointment appointment = appointments.get(0);
+        assertTrue(appointment.getVehicleTypes().contains("Veoauto"));
+
+        List<Appointment> appointments1 = service.getFilteredAppointmentTimes(encodedWithAddress);
+        assertNotNull(appointments1);
+        Appointment appointment1 = appointments1.get(0);
+        assertEquals("1A Gunton Rd, London", appointment1.getWorkshopAddress());
+
+        CorruptedSearchFilterDataException error = assertThrows(CorruptedSearchFilterDataException.class, ()  -> service.getFilteredAppointmentTimes("Must fail"));
+        assertEquals("The received search filter data has been corrupted or has wrong structure.", error.getLocalizedMessage());
+    }
+
+    
 }

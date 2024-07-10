@@ -23,7 +23,7 @@ public class ChangeTimeController {
     }
 
     @GetMapping("/filtered")
-    public List<Appointment> getMethodName(@RequestParam(required = true) String searchFilterDataJSON) {
+    public List<Appointment> getFilteredAppointments(@RequestParam(required = true) String searchFilterDataJSON) {
         return tireChangeService.getFilteredAppointmentTimes(searchFilterDataJSON);
     }
 

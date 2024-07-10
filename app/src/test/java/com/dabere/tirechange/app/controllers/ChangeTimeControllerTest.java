@@ -31,9 +31,23 @@ public class ChangeTimeControllerTest {
         MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/appointments")).andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        List<Appointment> appointments = objectMapper.readValue(contentAsString, new TypeReference<List<Appointment>>() {});
+        List<Appointment> appointments = objectMapper.readValue(contentAsString,
+                new TypeReference<List<Appointment>>() {
+                });
         System.out.println(appointments.toString());
-        assertTrue(appointments.size()>1);
+        assertTrue(appointments.size() > 1);
     }
 
+    @Test
+    void testGetFilteredAppointments() throws Exception {
+        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get(
+                "/appointments/filtered?searchFilterDataJSON=%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%5D%2C%22vehicleTypes%22%3A%5B%22Veoauto%22%5D%7D"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        List<Appointment> appointments = objectMapper.readValue(contentAsString,
+                new TypeReference<List<Appointment>>() {
+                });
+        assertTrue(appointments.size() > 1);
+    }
 }
