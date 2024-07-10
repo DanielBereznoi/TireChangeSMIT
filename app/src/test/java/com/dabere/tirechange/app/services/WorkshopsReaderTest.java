@@ -29,7 +29,6 @@ public class WorkshopsReaderTest {
         try {
             workshops = WorkshopsReader.main(null);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             fail("There was an error while reading the yaml file.");
         }
