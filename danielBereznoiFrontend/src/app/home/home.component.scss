@@ -1,0 +1,64 @@
+@media screen and (min-width: 1921px) {
+    .home-content {
+        font-size: 2.4rem;
+    }
+
+    button {
+        font-size: 2rem;
+        width: 18rem;
+    }
+
+    .home-1 {
+        transform: translateY(4rem) translateX(5rem);
+    }
+    
+    .home-2 {
+        transform: translateY(3rem) translateX(4rem);
+    }
+    
+    .home-3 {
+        transform: translateY(3rem) translateX(4rem);
+    }
+}
+
+@media screen and (max-width: 1920px) {
+    .home-content {
+        font-size: 2vw;
+    }
+
+    button {
+        font-size: 2vw;
+        width: 18vw;
+    }
+
+    .home-1 {
+        transform: translateY(4vw) translateX(5vw);
+    }
+    
+    .home-2 {
+        transform: translateY(3vw) translateX(4vw);
+    }
+    
+    .home-3 {
+        transform: translateY(3vw) translateX(4vw);
+    }
+}
+
+img {
+    width: 100%;
+    max-width: 1920px;
+    position: sticky;
+}
+
+.middle {
+    position: relative;
+}
+
+.home-content {
+    font-weight: bold;
+    text-align: center;
+    top: 14%;
+    right: 22%;
+    height: auto;
+}
+

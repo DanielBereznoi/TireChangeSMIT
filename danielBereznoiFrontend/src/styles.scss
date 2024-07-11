@@ -1,1 +1,24 @@
+@font-face {
+    font-family: rokkitt;
+    src: url('../public/Rokkitt-Regular.ttf') format("opentype");
+  }
+
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    max-width: 1920px;
+    height: 100%;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    overflow:;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    //background-image: url('../public/background2.png');
+    //background-repeat: no-repeat;
+    //background-size: cover;
+    //background-position: center;
+    //width: 100%;
+    //max-width: 1920px;
+}
