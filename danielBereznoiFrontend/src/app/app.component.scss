@@ -1,99 +1,46 @@
-nav {
-    background-color: #1E90FF;
-    max-width: 1920px;
-    height: 7rem;
-    flex: none;
-    font-family: rokkit;
+nav,
+footer {
+    background-color: #283848;
     color: white;
-
+    font-family: rokkit;
+    padding: 1rem 2rem 1rem 2rem;
 }
 
 .nav-left {
+    font-size: 2rem;
+    font-family: shrikhand;
     flex: 2;
-    font-size: 2.5rem;
-    font-weight: bolder;
     margin-top: auto;
     margin-bottom: auto;
-
+    color: #F4F67B;
 }
-
-img {
-    width: 3.5rem;
-    transform: translateX(0.2rem);
-}
-
-.logo {
-    background-color: white;
-    width: 4rem;
-    height:4rem;
-    border-radius: 45px;
-    outline: 3px solid #0b4e91;
-    transform: translateY(-0.5rem);
-
-}
-
-.title {
-    padding-left: 1rem;
-}
-
-
 
 .nav-right {
-    flex: 2;
-    font-size: 1.75rem;
-    font-weight: 550;
-    margin-top: auto;
-    margin-bottom: auto;
-
-}
-
-.nav-right p {
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-
-//.nav-left p, nav-right p {
-//    height: 100%;
-//}
-
-.app-container {
-    display: flex;
-    flex-direction: column;
-
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    flex: auto;
-}
-
-.middle {
+    font-size: 1.5rem;
     flex: 1;
-}
-
-
-.footer {
-    background-color: #1E90FF;
-    margin: 0;
-    max-width: 1920px;
-    height: 9rem;
-    flex: none;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-.footer p {
     margin-top: auto;
     margin-bottom: auto;
 }
 
+footer {
+    font-size: 1.2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}
 
-svg, button {
-    width: 4rem;
-    height:4rem;
-    margin-right: auto;
-    margin-left: auto;
+.footer-left {
+    flex: 1;
+    margin: inherit;
+}
+
+.footer-middle {
+    flex: 1;
+    align-items: center;
+    margin: inherit;
+}
+
+.footer-right {
+    flex: 1;
+    align-items: end;
+    margin: inherit;
 }

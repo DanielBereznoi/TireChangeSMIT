@@ -3,22 +3,37 @@
     src: url('../public/Rokkitt-Regular.ttf') format("opentype");
   }
 
-/* You can add global styles to this file, and also import other style files */
-html, body {
-    max-width: 1920px;
-    height: 100%;
-    margin: 0;
-    margin-left: auto;
-    margin-right: auto;
+  @font-face {
+    font-family: shrikhand;
+    src: url('../public/Shrikhand-Regular.ttf') format("opentype");
+  }
+
+body, html {
+  height: 100%;
+  font-family: rokkitt;
+  background-color: #FEFFE0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-body {
-    overflow:;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    //background-image: url('../public/background2.png');
-    //background-repeat: no-repeat;
-    //background-size: cover;
-    //background-position: center;
-    //width: 100%;
-    //max-width: 1920px;
+p {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+@media (min-width: 1800px) {
+  body, html {
+    max-width: 1920px;
+  }
+}
+
+@media (max-width: 900px) {
+  html, body {
+      max-width: 100%;
+  }
+}
+.banner-div {
+  background-image: url('../public/tirePic.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
