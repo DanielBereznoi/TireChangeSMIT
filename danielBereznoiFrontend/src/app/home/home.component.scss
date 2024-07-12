@@ -1,0 +1,134 @@
+.home-content {
+    //border: 3px solid gold;
+    padding: 2rem;
+}
+
+.banner-div {
+    height: 25rem;
+    border-radius: 5px;
+    //border: 3px solid red;
+}
+
+.banner {
+    max-width: 100%;
+}
+
+.banner-text {
+    font-family: shrikhand;
+    color: #283848;
+    font-size: 3rem;
+    font-weight: 100;
+    flex: 1;
+    text-align: center;
+}
+
+.banner-btn-div {
+    flex: 1;
+    filter: url('#flt_tag');
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.banner-btn {
+    clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+    width: 31rem;
+    height: 5rem;
+    background-color: #ff1b1b;
+    border: none;
+    color: white;
+    font-size: 3rem;
+    font-family: shrikhand;
+}
+
+.banner-btn:hover {
+    background-color: #da2e2e;
+}
+
+.banner-btn:active {
+    background-color: #9b2020;
+}
+
+.flt_svg {
+    visibility: hidden;
+    position: absolute;
+    width: 0px;
+    height: 0px;
+}
+
+.locations, .team {
+    background-color: aliceblue;
+} 
+
+.good-service {
+    //border: 3px solid red;
+    padding: 2rem 0;
+}
+
+.locations {
+    flex:1;
+    //border: 3px solid blue;
+    font-size: 3rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 5px;
+}
+
+
+.cities {
+    flex: 1;
+    font-size: 2.5rem;
+    height: 100%;
+    padding: 0 2rem 2rem 3rem;
+}
+
+.cities p {
+    padding-left: 1rem;
+}
+
+.cities img {
+    height: 50px;
+    width: 50px;
+}
+
+.cities svg {
+    height: 50px;
+    width: 50px;
+}
+
+.map {
+    flex:1;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 2rem 2rem 2rem;
+}
+
+
+img {
+    width: 100%;
+}
+
+.good-service-divider {
+    width: 2rem;
+}
+
+
+.vehicles {
+    flex: 1;
+    //border: 3px solid blue;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.vehicles-left, .vehicles-right {
+    flex: 1;
+    padding: 2rem;
+    
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+

@@ -1,0 +1,46 @@
+nav,
+footer {
+    background-color: #283848;
+    color: white;
+    font-family: rokkit;
+    padding: 1rem 2rem 1rem 2rem;
+}
+
+.nav-left {
+    font-size: 2rem;
+    font-family: shrikhand;
+    flex: 2;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #F4F67B;
+}
+
+.nav-right {
+    font-size: 1.5rem;
+    flex: 1;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+footer {
+    font-size: 1.2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.footer-left {
+    flex: 1;
+    margin: inherit;
+}
+
+.footer-middle {
+    flex: 1;
+    align-items: center;
+    margin: inherit;
+}
+
+.footer-right {
+    flex: 1;
+    align-items: end;
+    margin: inherit;
+}
