@@ -1,10 +1,38 @@
 # TireChangeSMIT
 Proovitöö SMIT Java Arendaja töökohale
 
+Used frameworks:
+  Backend - Spring Boot
+  Frontend - Angular 18
 
-User stories
+Possible backend requests:
 
-As a user I want to see a list of workshops with details so that I can get an overview of service providers.
-As a user I want to gow directly to booking page from workshop detailed view, so that I can make an informed choice of service.
-As a user I want to be able to filter the booking times by date, workshop and serviced vehicle so that I can make searching for booking time easier.
-As a user I want to 
+    1. Get all free appointment times from all workshops
+      - Method: GET
+      - url: http://localhost:8080/api/appointments
+
+    2. Get free appointment with filter
+      - Method: GET
+      - url: http://localhost:8080/api/appointments/filtered
+      - params: {
+        "from": "yyyy-mm-dd", # Search tire change times from date
+        "until":  "yyyy-mm-dd", # Search available times until date,
+        "workshopAddresses": [], # Addresses of the workshops that will be searched for appointment times
+        "vehicleTypes": [] # All vehicle types that appointment place should service 
+        }
+        
+    3. Book an appointment time
+      - Method: PUT
+      - url: http://localhost:8080/api/appointments/{appointmentId}
+      - params: {
+      "workshopAddress": string # Address of the workshop
+      }
+
+    4. Get all non testive workshop
+      - Method: GET
+      - url: http://localhost:8080/api/workshops
+  
+    5. Get all vehicle types avaiable in the system
+      - Method: GET
+      - url: http://localhost:8080/api/workshops/vehicle-types
+        
