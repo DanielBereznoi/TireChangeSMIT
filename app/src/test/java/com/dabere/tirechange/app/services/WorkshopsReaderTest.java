@@ -39,7 +39,7 @@ public class WorkshopsReaderTest {
         assertFalse(workshops.isEmpty());
         Workshop workshop = workshops.get(0);
         assertEquals("Test JSON", workshop.getName());
-        assertEquals("test address", workshop.getAddress());
+        assertEquals("test address json", workshop.getAddress());
         assertEquals("http://localhost:0000/api/test", workshop.getBaseUrl());
         assertEquals("Sõiduauto", workshop.getVehicleTypes().get(0));
         assertEquals("Veoauto", workshop.getVehicleTypes().get(1));

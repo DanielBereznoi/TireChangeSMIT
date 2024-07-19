@@ -11,5 +11,4 @@ import { BookingComponent } from './booking/booking.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'danielBereznoiFrontend';
 }

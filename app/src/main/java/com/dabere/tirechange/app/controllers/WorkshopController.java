@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dabere.tirechange.app.models.WorkshopModel;
 import com.dabere.tirechange.app.services.WorkshopService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -21,11 +20,6 @@ public class WorkshopController {
 
     @Autowired
     WorkshopService workshopService;
-
-    @GetMapping("/ok")
-    public boolean pageOK(@RequestParam String param) {
-        return true;
-    }
     
     @GetMapping()
     public List<WorkshopModel> getAllWorkshops() {

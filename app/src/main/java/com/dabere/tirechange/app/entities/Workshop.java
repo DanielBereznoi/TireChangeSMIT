@@ -18,6 +18,8 @@ public class Workshop {
     private List<String> vehicleTypes;
     private String baseUrl;
     private String getUrl;
+    private String fromKey;
+    private String untilKey;
     private String reservationHttpRequestUrl;
     private String reservationHttpRequestType;
     private String reservationHttpRequestBodyFormat;

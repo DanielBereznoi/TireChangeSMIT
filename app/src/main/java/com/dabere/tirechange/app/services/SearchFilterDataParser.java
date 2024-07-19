@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 public class SearchFilterDataParser {
     public static SearchFilterData main(String jsonDataEncoded) throws JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
         String jsonData = URLDecoder.decode(jsonDataEncoded, StandardCharsets.UTF_8.toString());
-        System.out.println(jsonData);
         ObjectMapper mapper = new ObjectMapper();
         SearchFilterData data = mapper.readValue(jsonData, SearchFilterData.class);
         return data;

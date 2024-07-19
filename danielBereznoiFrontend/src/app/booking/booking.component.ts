@@ -150,6 +150,7 @@ export class BookingComponent {
       localStorage.removeItem("startDate");
     }
   }
+  
   chooseEndDate(event: MatDatepickerInputEvent<Date>) {
     if (event.value != null) {
       localStorage.setItem("endDate", this.dateCustomFormatting(event.value));

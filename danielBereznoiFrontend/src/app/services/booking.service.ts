@@ -20,7 +20,7 @@ export class BookingService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: new HttpParams().set('searchFilterDataJSON', encodedFilterParameters)
     };
-
+    
     return this.http.get<{ [key: string]: Appointment[] }>(`${this.baseUrl}/appointments/filtered`, httpOptions).pipe(
       map(response => new Map(Object.entries(response)))
     );
