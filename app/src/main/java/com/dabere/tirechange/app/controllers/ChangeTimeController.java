@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.models.BookingMessageResponse;
 import com.dabere.tirechange.app.services.TireChangeService;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
