@@ -12,9 +12,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.dabere.tirechange.app.entities.Workshop;
 
+@SpringBootTest
 public class XMLParserTest {
 
     @Autowired

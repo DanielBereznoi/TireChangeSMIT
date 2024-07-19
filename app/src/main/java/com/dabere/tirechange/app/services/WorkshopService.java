@@ -38,7 +38,6 @@ public class WorkshopService {
                     .forEach(workshop -> vehicleTypes.addAll(workshop.getVehicleTypes()));
             return vehicleTypes;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

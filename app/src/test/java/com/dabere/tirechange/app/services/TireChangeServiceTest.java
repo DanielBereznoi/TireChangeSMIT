@@ -20,12 +20,13 @@ import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.entities.Workshop;
 import com.dabere.tirechange.app.exceptions.CorruptedSearchFilterDataException;
 import com.dabere.tirechange.app.exceptions.UnsupportedHttpResponseFormat;
+import com.dabere.tirechange.app.models.BookingMessageResponse;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
 @SpringBootTest
 public class TireChangeServiceTest {
-    
+
     @Autowired
     private TireChangeService service;
 
@@ -63,10 +64,18 @@ public class TireChangeServiceTest {
         assertNotNull(appointment.getAppointmentDate());
         assertNotNull(appointment.getVehicleTypes());
 
+        String from = "2030-01-01";
+        appointments = service.findTimes(workshop, from, endTime);
+        assertTrue(appointments.isEmpty());
+    }
+
+    @Test
+    void testParseRespons() {
+        String testStr = "[{\"id\":136,\"time\":\"2024-08-01T05:00:00Z\",\"available\":true}]";
         workshop.setResponseFormat("MUSTFAIL");
         UnsupportedHttpResponseFormat exception = assertThrows(
                 UnsupportedHttpResponseFormat.class,
-                () -> service.findTimes(workshop, localDate.toString(), endTime));
+                () -> service.parseResponse(testStr, workshop));
         assertEquals(
                 "MUSTFAIL is not supported Http response format. Make sure that you chose either JSON or XML format.",
                 exception.getMessage());
@@ -82,7 +91,7 @@ public class TireChangeServiceTest {
         assertNotNull(appointment.getAppointmentTime());
         assertNotNull(appointment.getAppointmentDate());
         assertNotNull(appointment.getVehicleTypes());
-        
+
     }
 
     @Test
@@ -131,6 +140,7 @@ public class TireChangeServiceTest {
     void getFilteredAppointmentTimes() {
         String encodedWithVehicleTypes = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%5D%2C%22vehicleTypes%22%3A%5B%22Veoauto%22%5D%7D";
         String encodedWithAddress = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%221A%20Gunton%20Rd%2C%20London%22%5D%2C%22vehicleTypes%22%3A%5B%5D%7D";
+        String emptyFilter = "%7B%7D";
         HashMap<String, List<Appointment>> result = service.getFilteredAppointmentTimes(encodedWithVehicleTypes);
         List<Appointment> appointments = result.get(result.keySet().iterator().next());
         assertNotNull(appointments);
@@ -143,9 +153,24 @@ public class TireChangeServiceTest {
         Appointment appointment1 = appointments1.get(0);
         assertEquals("1A Gunton Rd, London", appointment1.getWorkshopAddress());
 
-        CorruptedSearchFilterDataException error = assertThrows(CorruptedSearchFilterDataException.class, ()  -> service.getFilteredAppointmentTimes("Must fail"));
-        assertEquals("The received search filter data has been corrupted or has wrong structure.", error.getLocalizedMessage());
+        result = service.getFilteredAppointmentTimes(emptyFilter);
+        List<Appointment> appointments3 = result.get(result.keySet().iterator().next());
+        assertFalse(appointments3.isEmpty());
+
+        CorruptedSearchFilterDataException error = assertThrows(CorruptedSearchFilterDataException.class,
+                () -> service.getFilteredAppointmentTimes("Must fail"));
+        assertEquals("The received search filter data has been corrupted or has wrong structure.",
+                error.getLocalizedMessage());
     }
 
-    
+    @Test
+    void testBookFreeTireChangeTime() {
+        Appointment appointment = service.getAllAvailableTimes().get(0);
+        BookingMessageResponse response = service.bookFreeTireChangeTime(appointment.getAppointmentId(), appointment.getWorkshopAddress());
+        assertEquals("Broneering õnnestus.", response.getMessage());
+        response = service.bookFreeTireChangeTime(appointment.getAppointmentId(), "mustfail");
+        assertEquals("Tekkis viga. Töökoda pole leitud. Palun proovige uuesti hiljem või valige teine töökoda.", response.getMessage());
+        appointment = new Appointment("Test XML", "test address", "2024-5-6", "null", null, "as");
+        response = service.bookFreeTireChangeTime("1", "test address");
+    }
 }

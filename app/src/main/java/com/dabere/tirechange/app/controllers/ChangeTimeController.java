@@ -36,7 +36,7 @@ public class ChangeTimeController {
 
 
     @PutMapping("/{id}")
-    public BookingMessageResponse postMethodName(@PathVariable String id, @RequestParam String workshopAddress) {
+    public BookingMessageResponse bookAnAppointment(@PathVariable String id, @RequestParam String workshopAddress) {
         return tireChangeService.bookFreeTireChangeTime(id, workshopAddress);
     }
 

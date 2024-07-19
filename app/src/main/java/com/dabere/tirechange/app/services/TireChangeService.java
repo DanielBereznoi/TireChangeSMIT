@@ -20,12 +20,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.xml.sax.SAXException;
 
 import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.entities.Workshop;
 import com.dabere.tirechange.app.exceptions.CorruptedSearchFilterDataException;
+import com.dabere.tirechange.app.exceptions.UnsupportedHttpRequestOperator;
 import com.dabere.tirechange.app.exceptions.UnsupportedHttpResponseFormat;
 import com.dabere.tirechange.app.models.BookingMessageResponse;
 import com.dabere.tirechange.app.models.SearchFilterData;
@@ -58,7 +58,6 @@ public class TireChangeService {
 
         workshops.forEach(workshop -> {
             if (!workshop.isTestive()) {
-                System.out.println(workshop.toString());
                 appointments.addAll(findTimes(workshop, currentDate, END_DATETIME));
             }
 
@@ -76,7 +75,6 @@ public class TireChangeService {
             rawAppointmentData = parseResponse(response, workshop);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
 
         if (rawAppointmentData == null) {
@@ -90,7 +88,7 @@ public class TireChangeService {
                 .collect(Collectors.toList());
     }
 
-    private List<HashMap<String, String>> parseResponse(String response, Workshop workshop)
+    List<HashMap<String, String>> parseResponse(String response, Workshop workshop)
             throws ParserConfigurationException, IOException, SAXException {
         if ("JSON".equals(workshop.getResponseFormat())) {
             return jsonParser.parseJsonResponse(response, workshop);
@@ -154,7 +152,6 @@ public class TireChangeService {
 
             List<Appointment> appointments = new ArrayList<>();
 
-            System.out.println(endTime);
             workshops.forEach(workshop -> {
                 if (!workshop.isTestive()
                         && (workshopAddresses == null || workshopAddresses.isEmpty()
@@ -170,7 +167,6 @@ public class TireChangeService {
                     .sorted((a1, a2) -> a1.getAppointmnetDateTime().compareTo(a2.getAppointmnetDateTime()))
                     .collect(Collectors.toList());
             HashMap<String, List<Appointment>> appointmentsByDate = new LinkedHashMap<>();
-            System.out.println(sortedAppointments.toString());
             sortedAppointments.forEach((appointment) -> {
                 String appointmentDate = appointment.getAppointmentDate();
                 if (appointmentsByDate.containsKey(appointmentDate)) {
@@ -183,7 +179,6 @@ public class TireChangeService {
 
         } catch (JsonProcessingException | UnsupportedEncodingException e) {
             e.printStackTrace();
-            System.out.println(e);
         }
         throw new CorruptedSearchFilterDataException(
                 "The received search filter data has been corrupted or has wrong structure.");
@@ -194,7 +189,12 @@ public class TireChangeService {
         Optional<Workshop> workshop = workshops.stream().filter(w -> w.getAddress().equals(address)).findFirst();
 
         if (workshop.isPresent()) {
-            return webService.bookFreeTireChangeTime(id, address, workshop.get());
+            try {
+                return webService.bookFreeTireChangeTime(id, address, workshop.get());
+            } catch (UnsupportedHttpRequestOperator e) {
+                e.printStackTrace();
+                return new BookingMessageResponse("Rakenduses ilmnes sisemine viga. Palun proovige uuesti hiljem või valige teine töökoda.");
+            }
         } else {
             return new BookingMessageResponse("Tekkis viga. Töökoda pole leitud. Palun proovige uuesti hiljem või valige teine töökoda.");
         }

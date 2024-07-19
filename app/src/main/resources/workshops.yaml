@@ -1,11 +1,13 @@
 workshops:
   - name: Test JSON
-    address: test address
+    address: test address json
     baseUrl: http://localhost:0000/api/test
     vehicleTypes:
       - Sõiduauto
       - Veoauto
     getUrl: /test-url
+    fromKey: null
+    untilKey: null
     reservationHttpRequestUrl: /test-url/{id}/booking
     reservationHttpRequestType: POST
     reservationHttpRequestBodyFormat: JSON
@@ -23,14 +25,16 @@ workshops:
 
   - name: Test XML
     address: test address
-    baseUrl: http://localhost:0000/api/test
+    baseUrl: http://localhost:9003/api/v1
     vehicleTypes:
       - Sõiduauto
       - Veoauto
     getUrl: /test-url
+    fromKey: null
+    untilKey: null
     reservationHttpRequestUrl: /test-url/{id}/booking
-    reservationHttpRequestType: POST
-    reservationHttpRequestBodyFormat: JSON
+    reservationHttpRequestType: POSTs
+    reservationHttpRequestBodyFormat: XML
     reservationHttpRequestBody: |
       {
         "contactInformation": "string"
@@ -50,6 +54,8 @@ workshops:
       - Sõiduauto
       - Veoauto
     getUrl: /tire-change-times
+    fromKey: from
+    untilKey: null
     reservationHttpRequestUrl: /tire-change-times/{id}/booking
     reservationHttpRequestType: POST
     reservationHttpRequestBodyFormat: JSON
@@ -70,6 +76,8 @@ workshops:
     vehicleTypes:
       - "Sõiduauto"
     getUrl: /tire-change-times/available
+    fromKey: from
+    untilKey: until
     reservationHttpRequestUrl: /tire-change-times/{uuid}/booking
     reservationHttpRequestType: PUT
     reservationHttpRequestBodyFormat: XML

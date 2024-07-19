@@ -23,12 +23,13 @@ public class WebService {
         WebClient client = WebClient.builder()
                 .baseUrl(workshop.getBaseUrl())
                 .build();
+                
+        String fromKey = (workshop.getFromKey()!=null) ? workshop.getFromKey() : "from";
+        String untilKey = (workshop.getUntilKey()!=null) ? workshop.getUntilKey() : "until";
 
-        // TODO Make "from" and "until" parameter names be configurable from config
-        // block. Check if they are even needed.
         String response = client.get()
-                .uri(UriBuilder -> UriBuilder.path(workshop.getGetUrl()).queryParam("from", from)
-                        .queryParam("until", until)
+                .uri(UriBuilder -> UriBuilder.path(workshop.getGetUrl()).queryParam(fromKey, from)
+                        .queryParam(untilKey, until)
                         .build())
                 .retrieve()
                 .bodyToMono(String.class)
@@ -61,9 +62,7 @@ public class WebService {
             // Handle WebClientResponseException and return error details
             switch (ex.getStatusCode().toString()) {
                 case "422 UNPROCESSABLE_ENTITY":
-                    
                     return new BookingMessageResponse("See aeg on võetud. Palun valige teine.");
-                
                 default:
                     return new BookingMessageResponse("Tekkis probleem töökojaga. Palun valige teine.");
             }
