@@ -20,7 +20,7 @@ public List<HashMap<String, String>> parseJsonResponse(String response, Workshop
         TypeReference<List<HashMap<String, String>>> typeRef = new TypeReference<List<HashMap<String, String>>>() {
         };
         List<HashMap<String, String>> rawAppointmentData = mapper.readValue(response, typeRef);
-
+        
         return rawAppointmentData;
     }
 }

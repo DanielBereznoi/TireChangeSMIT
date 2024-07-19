@@ -1,19 +1,138 @@
 .booking-content {
     border: 3px solid yellow;
     padding: 2.5rem;
-}
-
-.filter-panel {
+    font-size: 2rem;
+  }
+  
+  .filter-panel,
+  .booking-times {
     flex: 1;
     border: 3px solid red;
-    min-height: 80rem;
-}
+    background-color: white;
+    min-width: 17rem;
+  }
+  
+  #main,
+  mat-panel-title,
+  .filter-title,
+  .booking-times-header {
+    color: darkgray;
+  }
+  
+  #main,
+  .appointment-time-left p,
+  .red-btn,
+  .red-btn p,
+  .booking-times-header p {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  
+  #main,
+  mat-panel-title,
+  .booking-times-header p {
+    font-family: roboto-bold;
+  }
+  
+  mat-panel-title,
+  .booking-times-header p{
+    font-size: 2rem;
+    height: 2rem;
+  }
+  
+  mat-expansion-panel-header,
+  .booking-times-header {
+    border: 1px solid rgb(219, 219, 219);
+    min-height: 5rem;
+  }
 
-.divider {
+
+
+  .header-paginator {
+    align-items: center;
+  }
+  
+
+  .filter-title {
+    padding-top: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .date-filter,
+  .workshop-filter,
+  .vehicle-filter,
+  li {
+    padding-top: 1rem;
+  }
+  
+  .date-filter,
+  .workshop-filter,
+  .vehicle-filter {
+    padding-bottom: 4rem;
+    padding-left: 1rem;
+  }
+  
+  label {
+    font-family: rokkitt;
+    font-size: 1rem;
+  }
+  
+  .divider {
     width: 2rem;
-}
-
-.booking-times {
-    flex: 3;
-    border: 3px solid red;
-}
+    height: 2rem;
+  }
+  
+  .appointment-feed {
+    padding-top: 2rem;
+  }
+  
+  .booking-times {
+    flex: 4;
+  }
+  
+  .booking-times-header {
+    border-radius: 5px;
+    padding: 1rem 1rem 0;
+    color: darkgray;
+  }
+  
+  .appointment-time,
+  .appointment-time-middle {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 0.5rem;
+  }
+  
+  .appointment-time {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    padding: 0 2rem;
+  }
+  
+  .appointment-time-left {
+    align-self: center;
+    display: grid;
+    grid-auto-flow: row;
+    gap: 3rem;
+    max-width: 25rem;
+  }
+  
+  .vehicle-type {
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .red-btn {
+    height: auto;
+    font-size: 2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  

@@ -9,12 +9,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.dabere.tirechange.app.entities.Workshop;
 
 @SpringBootTest
 public class WorkshopsReaderTest {
+
+    @Autowired
+    private WorkshopsReader workshopsReader;
 
     private List<Workshop> workshops;
     
@@ -25,9 +29,9 @@ public class WorkshopsReaderTest {
     }
 
     @Test
-    void testMain() {
+    void testGetWorkshopList() {
         try {
-            workshops = WorkshopsReader.main(null);
+            workshops = workshopsReader.getWorkshopList();
         } catch (IOException e) {
             e.printStackTrace();
             fail("There was an error while reading the yaml file.");

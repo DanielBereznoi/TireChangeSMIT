@@ -1,7 +1,6 @@
 <nav class="d-flex flex-row justify-content-between">
-    <div class="nav-left d-flex flex-column">
+    <div class="nav-left d-flex flex-column" [routerLink]="['/home']">
         <p>TIREIFFIC</p>
-        <p>We'll take your money</p>
     </div>
     <div class="nav-right d-flex flex-row justify-content-around">
         <!--      
@@ -9,16 +8,18 @@
         <button type="button">ABOUT</button>
         <button type="button">CONTACTS</button>
         -->
-        <p>BOOKING</p>
+        <button class="btn" [routerLink]="['/booking']">BOOKING</button>
+        
+        <!--
         <p>ABOUT</p>
         <p>CONTACTS</p>
+    -->
     </div>
 </nav>
 <main>
-    <app-booking></app-booking>
     <router-outlet />
 </main>
-<footer class="d-flex flex-row justify-content-between">
+<footer>
     <div class="footer-left d-flex flex-column">
         <p>Tireiffic</p>
         <p>Taking money with a smile</p>

@@ -8,6 +8,11 @@ workshops:
     getUrl: /test-url
     reservationHttpRequestUrl: /test-url/{id}/booking
     reservationHttpRequestType: POST
+    reservationHttpRequestBodyFormat: JSON
+    reservationHttpRequestBody: |
+      {
+        "contactInformation": "string"
+      }
     responseFormat: JSON
     # Below are the keys needed for the app to retrieve data from the responses
     # Write null if there is no need for vacancy verification otherwise write availability value key here
@@ -25,6 +30,11 @@ workshops:
     getUrl: /test-url
     reservationHttpRequestUrl: /test-url/{id}/booking
     reservationHttpRequestType: POST
+    reservationHttpRequestBodyFormat: JSON
+    reservationHttpRequestBody: |
+      {
+        "contactInformation": "string"
+      }
     responseFormat: XML
     # Below are the keys needed for the app to retrieve data from the responses
     # Write null if there is no need for vacancy verification otherwise write availability value key here
@@ -42,6 +52,11 @@ workshops:
     getUrl: /tire-change-times
     reservationHttpRequestUrl: /tire-change-times/{id}/booking
     reservationHttpRequestType: POST
+    reservationHttpRequestBodyFormat: JSON
+    reservationHttpRequestBody: |
+      {
+        "contactInformation": "string"
+      }
     responseFormat: JSON
     # Below are the keys needed for the app to retrieve data from the responses
     # Write null if there is no need for vacancy verification otherwise write availability value key here
@@ -55,12 +70,20 @@ workshops:
     vehicleTypes:
       - "Sõiduauto"
     getUrl: /tire-change-times/available
-    reservationHttpRequestUrl: /tire-change-times/{id}/booking
-    reservationHttpRequestType: POST
+    reservationHttpRequestUrl: /tire-change-times/{uuid}/booking
+    reservationHttpRequestType: PUT
+    reservationHttpRequestBodyFormat: XML
+    reservationHttpRequestBody: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <london.tireChangeBookingRequest>
+        <contactInformation>
+          string
+        </contactInformation>
+      </london.tireChangeBookingRequest>
+
     responseFormat: XML
     # Below are the keys needed for the app to retrieve data from the responses
     # Write null if there is no need for vacancy verification otherwise write availability value key here
     availableKey: null
     idKey: uuid
     timeKey: time
-    

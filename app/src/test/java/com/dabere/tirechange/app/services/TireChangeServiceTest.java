@@ -1,6 +1,5 @@
 package com.dabere.tirechange.app.services;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,17 +11,17 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cglib.core.Local;
 
 import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.entities.Workshop;
 import com.dabere.tirechange.app.exceptions.CorruptedSearchFilterDataException;
 import com.dabere.tirechange.app.exceptions.UnsupportedHttpResponseFormat;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 
 @SpringBootTest
 public class TireChangeServiceTest {
@@ -34,17 +33,16 @@ public class TireChangeServiceTest {
     private JSONParser jsonParser;
 
     @Autowired
+    private WorkshopsReader workshopsReader;
+
+    @Autowired
     private XMLParser xmlParser;
 
     private static Workshop workshop;
 
-    @BeforeAll
-    static void beforeAll() throws IOException {
-        workshop = WorkshopsReader.main(null).get(2);
-    }
-
     @BeforeEach
-    void setUp() {
+    void setUp() throws StreamReadException, DatabindException, IOException {
+        workshop = workshopsReader.getWorkshopList().get(2);
         assertNotNull(service);
         assertNotNull(jsonParser);
         assertNotNull(xmlParser);
@@ -133,12 +131,14 @@ public class TireChangeServiceTest {
     void getFilteredAppointmentTimes() {
         String encodedWithVehicleTypes = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%5D%2C%22vehicleTypes%22%3A%5B%22Veoauto%22%5D%7D";
         String encodedWithAddress = "%7B%22from%22%3A%222024-08-01%22%2C%22until%22%3A%222024-08-30%22%2C%22workshopAddresses%22%3A%5B%221A%20Gunton%20Rd%2C%20London%22%5D%2C%22vehicleTypes%22%3A%5B%5D%7D";
-        List<Appointment> appointments = service.getFilteredAppointmentTimes(encodedWithVehicleTypes);
+        HashMap<String, List<Appointment>> result = service.getFilteredAppointmentTimes(encodedWithVehicleTypes);
+        List<Appointment> appointments = result.get(result.keySet().iterator().next());
         assertNotNull(appointments);
         Appointment appointment = appointments.get(0);
         assertTrue(appointment.getVehicleTypes().contains("Veoauto"));
 
-        List<Appointment> appointments1 = service.getFilteredAppointmentTimes(encodedWithAddress);
+        result = service.getFilteredAppointmentTimes(encodedWithAddress);
+        List<Appointment> appointments1 = result.get(result.keySet().iterator().next());
         assertNotNull(appointments1);
         Appointment appointment1 = appointments1.get(0);
         assertEquals("1A Gunton Rd, London", appointment1.getWorkshopAddress());

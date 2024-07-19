@@ -20,6 +20,8 @@ public class Workshop {
     private String getUrl;
     private String reservationHttpRequestUrl;
     private String reservationHttpRequestType;
+    private String reservationHttpRequestBodyFormat;
+    private String reservationHttpRequestBody;
     private String responseFormat;
     private String availableKey;
     private String idKey;

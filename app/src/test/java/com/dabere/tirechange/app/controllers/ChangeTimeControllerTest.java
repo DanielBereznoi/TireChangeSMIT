@@ -15,6 +15,7 @@ import com.dabere.tirechange.app.entities.Appointment;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -45,8 +46,8 @@ public class ChangeTimeControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        List<Appointment> appointments = objectMapper.readValue(contentAsString,
-                new TypeReference<List<Appointment>>() {
+        HashMap<String, List<Appointment>> appointments = objectMapper.readValue(contentAsString,
+                new TypeReference<HashMap<String, List<Appointment>>>() {
                 });
         assertTrue(appointments.size() > 1);
     }

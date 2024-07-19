@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.dabere.tirechange.app.entities.Workshop;
@@ -19,11 +20,14 @@ public class JSONParserTest {
 
     private JSONParser jsonParser;
     private Workshop workshop;
+    
+    @Autowired
+    private WorkshopsReader workshopsReader;
 
     @BeforeEach
     public void setUp() throws IOException {
         jsonParser = new JSONParser();
-        workshop = WorkshopsReader.main(null).get(0);
+        workshop = workshopsReader.getWorkshopList().get(0);
     }
 
     @Test

@@ -1,19 +1,32 @@
 @font-face {
-    font-family: rokkitt;
-    src: url('../public/Rokkitt-Regular.ttf') format("opentype");
-  }
+  font-family: rokkitt;
+  src: url('../public/Rokkitt-Regular.ttf') format('opentype');
+}
 
-  @font-face {
-    font-family: shrikhand;
-    src: url('../public/Shrikhand-Regular.ttf') format("opentype");
-  }
+@font-face {
+  font-family: shrikhand;
+  src: url('../public/Shrikhand-Regular.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: roboto-bold;
+  src: url('../public/roboto.bold.ttf') format('opentype');
+}
 
 body, html {
   height: 100%;
   font-family: rokkitt;
-  background-color: #FEFFE0;
+  background-color: #f8f8ed;
   margin-left: auto;
   margin-right: auto;
+
+  @media (min-width: 1800px) {
+    max-width: 1920px;
+  }
+
+  @media (max-width: 900px) {
+    max-width: 100%;
+  }
 }
 
 p {
@@ -21,19 +34,37 @@ p {
   margin-bottom: auto;
 }
 
-@media (min-width: 1800px) {
-  body, html {
-    max-width: 1920px;
-  }
+.banner-div {
+  background: url('../public/tirePic.png') no-repeat center center/cover;
 }
 
-@media (max-width: 900px) {
-  html, body {
-      max-width: 100%;
+.red-btn {
+  background-color: #ff1b1b;
+  border: none;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  &:hover {
+    background-color: #da2e2e;
   }
-}
-.banner-div {
-  background-image: url('../public/tirePic.png');
-  background-repeat: no-repeat;
-  background-size: cover;
+
+  &:active {
+    background-color: #9b2020;
+  }
+
+
+  ::ng-deep {
+    mat-expansion-panel .mat-expansion-panel-body {
+      padding: 0;
+    }
+
+    mat-paginator {
+      font-family: rokkitt !important;
+    }
+  }
+  
 }

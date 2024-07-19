@@ -1,14 +1,118 @@
-<div class="d-flex flex-xl-row booking-content">
-    <div class="filter-panel">
+<div class="d-flex flex-xl-row flex-column booking-content">
+    <mat-expansion-panel class="filter-panel d-flex flex-column" [disabled]="screenWidth>1250" [expanded]="screenWidth>1250">
+        <mat-expansion-panel-header class="filter-header d-flex flex-row justify-content-between">
+            <mat-panel-title>Filter</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="main">
+            <div class="date-filter">
+                <p class="filter-title">Broneeringu päevad</p>
+                <mat-checkbox [checked]="singleDateChoice" (change)="changeSingleDateChoice($event)">Valida kindel
+                    broneeringu päev</mat-checkbox>
+                <mat-form-field *ngIf="singleDateChoice==true">
+                    <mat-label>Sisestage broneeringu päev</mat-label>
+                    <input [(ngModel)]="singleDate" matInput [matDatepicker]="picker"
+                        (dateChange)="chooseSingleDate($event)">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
 
-    </div>
+                <mat-form-field *ngIf="singleDateChoice==false">
+                    <mat-label>Sisestage päevade vahemik</mat-label>
+                    <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+                        <input matStartDate (dateChange)="chooseStartDate($event)" placeholder="Alguskuupäev"
+                            formControlName="start">
+                        <input matEndDate (dateChange)="chooseEndDate($event)" placeholder="Lõpukuupäev"
+                            formControlName="end">
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="workshop-filter">
+                <p class="filter-title">Töökojad</p>
+                <div *ngFor="let workshop of workshops | keyvalue" class="d-flex flex-row">
+                    <div class="d-flex flex-row justify-content-start">
+                        <mat-checkbox class="example-margin" [checked]="workshop.value"
+                            (change)="checkAWorkshop($event, workshop.key.address)">{{
+                            workshop.key.name}} - {{ workshop.key.address}}</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vehicle-filter">
+                <p class="filter-title">Masina liigid</p>
+                <div *ngFor="let vehicleType of vehicleTypes | keyvalue" class="d-flex flex-row justify-content-start">
+                    <div class="d-flex flex-row justify-content-start">
+                        <mat-checkbox class="example-margin" [checked]="vehicleType.value"
+                            (change)="checkVehilceType($event, vehicleType.key)">{{vehicleType.key}}</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-expansion-panel>
     <div class="divider"></div>
     <div class="booking-times d-flex flex-column">
-        <div>
-            <p>Booking</p>
+        <div class="booking-times-header d-flex flex-s-row flex-md-row flex-lg-row flex-xl-row flex-xxl-row flex-column justify-content-between">
+
+                <p>Booking</p>
+            <div class="header-paginator">
+                <mat-paginator *ngIf="total>0" [length]="total" [pageSize]="limit" [pageIndex]="currentPage"
+                    [hidePageSize]="true"  [pageSizeOptions]="[3,4,5,10]" [showFirstLastButtons]="true"
+                    (page)="changePage($event)"></mat-paginator>
+            </div>
         </div>
-        <div>
-            
+        <div *ngIf="total==0" class="p-3">
+            <p>Vabandame, valitud valikutega vabu aegu pole.</p>
         </div>
+        <div *ngIf="total>0">
+            <div class="appointment-feed" *ngFor="let appointmentData of data |keyvalue | slice: currentPage*limit: currentPage*limit+limit">
+                <p class="p-3">{{appointmentData.key}}</p>
+                <hr>
+                <div *ngFor="let appointment of appointmentData.value">
+                    <div class="d-flex flex-xl-row justify-content-between flex-column appointment-time">
+                        <div class="d-flex flex-md-row flex-column appointment-time-left justify-content-xl-start justify-content-between">
+                            <p>{{appointment.appointmentTime}}</p>
+                            <div class="d-flex flex-column">
+                                <p>Nimi: {{appointment.workshopName}}</p>
+                                <p>Aadress: {{appointment.workshopAddress}}</p>
+                            </div>
+                        </div>
+                        <div class="appointment-time-middle d-flex flex-xl-row flex-column">
+                            <ul class="d-flex flex-column flex-sm-row flex-xl-column justify-content-around">
+                                <li *ngFor="let vehicleType of appointment.vehicleTypes | slice: 0: 2">{{vehicleType}}
+                                </li>
+                            </ul>
+                            <ul class="d-flex flex-xl-column justify-content-around">
+                                <li *ngFor="let vehicleType of appointment.vehicleTypes | slice: 3: 5">{{vehicleType}}
+                                </li>
+                            </ul>
+                            <ul class="d-flex flex-xl-column justify-content-around">
+                                <li *ngFor="let vehicleType of appointment.vehicleTypes | slice: 6: 8">{{vehicleType}}
+                                </li>
+                            </ul>
+
+                            <ul class="d-flex flex-xl-column justify-content-around">
+                                <li *ngFor="let vehicleType of appointment.vehicleTypes | slice: 9: appointment.vehicleTypes.length">{{vehicleType}}
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="btn  red-btn d-flex flex-row justify-content-center" type="button" (click)="bookATime(appointment)">
+                            <p>Broneeri</p>
+                        </button>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <!--
+            <app-paginator [currentPage]="currentPage" [limit]="limit" [total]="total"
+                (changePage)="changePage($event)"></app-paginator>
+        -->
+        <mat-paginator *ngIf="total>0" [length]="total" [pageSize]="limit" [pageIndex]="currentPage"
+            [hidePageSize]="true" [pageSizeOptions]="[3,4,5,10]" [showFirstLastButtons]="true"
+            (page)="changePage($event)"></mat-paginator>
     </div>
 </div>

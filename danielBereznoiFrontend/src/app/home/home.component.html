@@ -1,11 +1,11 @@
 <div class="home-content d-flex flex-column">
-    <div class="banner-div d-flex flex-xl-row flex-md-column flex-sm-column justify-content-xl-between">
+    <div class="banner-div d-flex flex-xl-row flex-column justify-content-xl-between">
         <div class="banner-text d-flex flex-column justify-content-around">
-            <p>NEED NEW TIRES?</p>
-            <p>GIVE US YOUR MONEY</p>
+            <p>VAJAD REHVIVAHETUST?</p>
+            <p>ANNA MEILE OMA RAHA</p>
         </div>
         <div class="banner-btn-div d-flex flex-row justify-content-center">
-            <button class="banner-btn my-auto">BOOK A TIME</button>
+            <button [routerLink]="['/booking']" class="red-btn my-auto">BRONEERI AEG</button>
             <svg class="flt_svg" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <filter id="flt_tag">
@@ -19,7 +19,14 @@
         </div>
     </div>
 
-    <div class="good-service d-flex flex-row">
+    <div class="good-service d-flex flex-column flex-xl-row">
+        <div class="team d-flex flex-column justify-content-between">
+            <p>Professionaalne meeskond</p>
+            <div class="team-img-div">
+                <img src="team-five.png" alt="" style="width: 100%; height: auto;">
+            </div>
+        </div>
+        <!--
         <div class="locations d-flex flex-column">
             <p class="location-title">We have workshops all over the UK!</p>
             <div class="d-flex flex-xl-row flex-lg-column flex-sm-column">
@@ -46,20 +53,21 @@
                 </div>
             </div>
         </div>
+        -->
         <div class="good-service-divider"></div>
         <div class="vehicles d-flex flex-column">
-            <p>We service a wide variety of vehicles</p>
-            <div class="d-flex flex-xl-row flex-lg-column flex-md-column flex-sm-column">
+            <p>Me teenindame kõiki sõidukeid</p>
+            <div class="d-flex flex-xl-row flex-column">
                 <div class="vehicles-left">
                     <img src="car-sketch.png" alt="">
                 </div>
                 <div class="vehicles-right">
-                    <p>Starting with cars</p>
+                    <p>Alustades autodega</p>
                 </div>
             </div>
-            <div class="d-flex flex-xl-row flex-lg-column flex-md-column flex-sm-column">
+            <div class="d-flex flex-xl-row flex-column">
                 <div class="vehicles-left">
-                    <p>Ending with trucks</p>
+                    <p>Lõpetades traktoritega</p>
                 </div>
                 <div class="vehicles-right">
                     <img src="tractor-sketch.png" style="opacity: 80%;" alt="">

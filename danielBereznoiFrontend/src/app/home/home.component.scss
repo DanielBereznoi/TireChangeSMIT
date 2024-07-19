@@ -6,6 +6,19 @@
 .banner-div {
     height: 25rem;
     border-radius: 5px;
+
+    @media (min-width: 575px) {
+
+        font-size: 3rem;
+        line-height: 3rem;
+    }
+
+    @media (max-width: 574px) {
+
+        font-size: 8vw;
+        line-height: 8vw;
+    }
+
     //border: 3px solid red;
 }
 
@@ -16,7 +29,6 @@
 .banner-text {
     font-family: shrikhand;
     color: #283848;
-    font-size: 3rem;
     font-weight: 100;
     flex: 1;
     text-align: center;
@@ -29,23 +41,22 @@
     margin-bottom: auto;
 }
 
-.banner-btn {
+.red-btn {
     clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
-    width: 31rem;
-    height: 5rem;
-    background-color: #ff1b1b;
-    border: none;
-    color: white;
-    font-size: 3rem;
+
+    @media (min-width: 574px) {
+        width: 31rem;
+        height: 5rem;
+
+    }
+
+    @media (max-width: 574px) {
+        width: 80vw;
+        height: 15vw;
+
+    }
+
     font-family: shrikhand;
-}
-
-.banner-btn:hover {
-    background-color: #da2e2e;
-}
-
-.banner-btn:active {
-    background-color: #9b2020;
 }
 
 .flt_svg {
@@ -55,53 +66,46 @@
     height: 0px;
 }
 
-.locations, .team {
+.vehicles,
+.team {
+    flex: 1;
     background-color: aliceblue;
-} 
+    padding: 2rem;
+}
 
 .good-service {
     //border: 3px solid red;
     padding: 2rem 0;
-}
 
-.locations {
-    flex:1;
-    //border: 3px solid blue;
-    font-size: 3rem;
+
+    @media (min-width: 575px) {
+        line-height: 3rem;
+        font-size: 3rem;
+    }
+
+    @media (max-width: 575px) {
+        font-size: 8vw;
+        line-height: 8vw;
+    }
+        
     font-weight: 600;
     text-align: center;
     border-radius: 5px;
 }
 
-
-.cities {
+.team {
     flex: 1;
-    font-size: 2.5rem;
     height: 100%;
-    padding: 0 2rem 2rem 3rem;
 }
 
-.cities p {
+
+.team div {
+    padding-top: 3rem;
+}
+
+.team p {
     padding-left: 1rem;
 }
-
-.cities img {
-    height: 50px;
-    width: 50px;
-}
-
-.cities svg {
-    height: 50px;
-    width: 50px;
-}
-
-.map {
-    flex:1;
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 0 2rem 2rem 2rem;
-}
-
 
 img {
     width: 100%;
@@ -112,23 +116,10 @@ img {
 }
 
 
-.vehicles {
+.vehicles-left,
+.vehicles-right {
     flex: 1;
-    //border: 3px solid blue;
-    background-color: white;
-    border-radius: 5px;
-    text-align: center;
-
-    font-size: 3rem;
-    font-weight: 600;
-}
-
-.vehicles-left, .vehicles-right {
-    flex: 1;
-    padding: 2rem;
-    
     margin-top: auto;
     margin-bottom: auto;
+    text-align: center;
 }
-
-

@@ -2,15 +2,19 @@ package com.dabere.tirechange.app.services;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -23,12 +27,19 @@ import com.dabere.tirechange.app.entities.Appointment;
 import com.dabere.tirechange.app.entities.Workshop;
 import com.dabere.tirechange.app.exceptions.CorruptedSearchFilterDataException;
 import com.dabere.tirechange.app.exceptions.UnsupportedHttpResponseFormat;
+import com.dabere.tirechange.app.models.BookingMessageResponse;
 import com.dabere.tirechange.app.models.SearchFilterData;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Service
 public class TireChangeService {
+
+    @Autowired
+    private WebService webService;
+
+    @Autowired
+    private WorkshopsReader workshopsReader;
+
     @Autowired
     private XMLParser xmlParser;
 
@@ -56,50 +67,51 @@ public class TireChangeService {
     }
 
     public List<Appointment> findTimes(Workshop workshop, String from, String until) {
-        List<Appointment> workshopAppointments = new ArrayList<>();
         List<HashMap<String, String>> rawAppointmentData = new ArrayList<>();
         LocalDate startDate = java.time.LocalDate.parse(from);
         LocalDate endDate = java.time.LocalDate.parse(until);
-        WebClient client = WebClient.builder()
-                .baseUrl(workshop.getBaseUrl())
-                .build();
-
-        // TODO Make "from" and "until" parameter names be configurable from config block. Check if they are even needed.
-        String response = client.get()
-                .uri(UriBuilder -> UriBuilder.path(workshop.getGetUrl()).queryParam("from", from)
-                        .queryParam("until", until)
-                        .build())
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String response = webService.sendGetRequestForAppointments(workshop, until, from);
 
         try {
-            if ("JSON".equals(workshop.getResponseFormat())) {
-                rawAppointmentData = jsonParser.parseJsonResponse(response, workshop);
-            } else if ("XML".equals(workshop.getResponseFormat())) {
-                rawAppointmentData = xmlParser.parseXMLResponse(response, workshop);
-            } else {
-                throw new UnsupportedHttpResponseFormat(workshop.getResponseFormat()
-                        + " is not supported Http response format. Make sure that you chose either JSON or XML format.");
-            }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+            rawAppointmentData = parseResponse(response, workshop);
+        } catch (Exception e) {
             e.printStackTrace();
-        
+            return new ArrayList<>();
         }
 
-        rawAppointmentData.forEach(raw -> {
-            if (isAppointmentAvailable(raw, workshop.getAvailableKey())) {
-                ZonedDateTime zonedAppointmentTime = ZonedDateTime.parse(raw.get(workshop.getTimeKey()), DateTimeFormatter.ISO_ZONED_DATE_TIME);
-                LocalDate appointmentDate = zonedAppointmentTime.toLocalDate();
-                if ((appointmentDate.isBefore(endDate) || appointmentDate.isEqual(endDate))
-                        && (appointmentDate.isAfter(startDate) || appointmentDate.isEqual(startDate))) {
-                    workshopAppointments.add(mapIntoAppointment(raw, workshop));
-                }
+        if (rawAppointmentData == null) {
+            return new ArrayList<>();
+        }
 
-            }
-        });
+        return rawAppointmentData.stream()
+                .filter(raw -> isAppointmentAvailable(raw, workshop.getAvailableKey()))
+                .map(raw -> mapIfWithinDateRange(raw, workshop, startDate, endDate))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 
-        return workshopAppointments;
+    private List<HashMap<String, String>> parseResponse(String response, Workshop workshop)
+            throws ParserConfigurationException, IOException, SAXException {
+        if ("JSON".equals(workshop.getResponseFormat())) {
+            return jsonParser.parseJsonResponse(response, workshop);
+        } else if ("XML".equals(workshop.getResponseFormat())) {
+            return xmlParser.parseXMLResponse(response, workshop);
+        } else {
+            throw new UnsupportedHttpResponseFormat(workshop.getResponseFormat()
+                    + " is not supported Http response format. Make sure that you chose either JSON or XML format.");
+        }
+    }
+
+    private Appointment mapIfWithinDateRange(HashMap<String, String> raw, Workshop workshop, LocalDate startDate,
+            LocalDate endDate) {
+        ZonedDateTime zonedAppointmentTime = ZonedDateTime.parse(raw.get(workshop.getTimeKey()),
+                DateTimeFormatter.ISO_ZONED_DATE_TIME);
+        LocalDate appointmentDate = zonedAppointmentTime.toLocalDate();
+        if ((appointmentDate.isBefore(endDate) || appointmentDate.isEqual(endDate))
+                && (appointmentDate.isAfter(startDate) || appointmentDate.isEqual(startDate))) {
+            return mapIntoAppointment(raw, workshop);
+        }
+        return null;
     }
 
     public Appointment mapIntoAppointment(HashMap<String, String> raw, Workshop workshop) {
@@ -121,14 +133,14 @@ public class TireChangeService {
 
     private void loadWorkshops() {
         try {
-            workshops = WorkshopsReader.main(null);
+            workshops = workshopsReader.getWorkshopList();
         } catch (IOException e) {
             e.printStackTrace();
             // Handle exception appropriately
         }
     }
 
-    public List<Appointment> getFilteredAppointmentTimes(String searchFilterDataUrlString) {
+    public HashMap<String, List<Appointment>> getFilteredAppointmentTimes(String searchFilterDataUrlString) {
         SearchFilterData searchFilterData;
         try {
             searchFilterData = SearchFilterDataParser.main(searchFilterDataUrlString);
@@ -137,26 +149,54 @@ public class TireChangeService {
             List<String> workshopAddresses = searchFilterData.getWorkshopAddresses();
             List<String> vehicleTypes = searchFilterData.getVehicleTypes();
             loadWorkshops();
-            System.out.println(vehicleTypes.toString());
             String startDate = (from != null) ? from : java.time.LocalDate.now().toString();
             String endTime = (until != null) ? until : END_DATETIME;
-    
+
             List<Appointment> appointments = new ArrayList<>();
-    
+
             System.out.println(endTime);
             workshops.forEach(workshop -> {
                 if (!workshop.isTestive()
-                        && (workshopAddresses == null || workshopAddresses.isEmpty() || workshopAddresses.contains(workshop.getAddress()))
-                        && (vehicleTypes == null || vehicleTypes.isEmpty() || workshop.getVehicleTypes().containsAll(vehicleTypes))) {
+                        && (workshopAddresses == null || workshopAddresses.isEmpty()
+                                || workshopAddresses.contains(workshop.getAddress()))
+                        && (vehicleTypes == null || vehicleTypes.isEmpty()
+                                || workshop.getVehicleTypes().containsAll(vehicleTypes))) {
                     appointments.addAll(findTimes(workshop, startDate, endTime));
                 }
             });
-            return appointments;
+
+            // Retun appointment list sorted by date
+            List<Appointment> sortedAppointments = appointments.stream()
+                    .sorted((a1, a2) -> a1.getAppointmnetDateTime().compareTo(a2.getAppointmnetDateTime()))
+                    .collect(Collectors.toList());
+            HashMap<String, List<Appointment>> appointmentsByDate = new LinkedHashMap<>();
+            System.out.println(sortedAppointments.toString());
+            sortedAppointments.forEach((appointment) -> {
+                String appointmentDate = appointment.getAppointmentDate();
+                if (appointmentsByDate.containsKey(appointmentDate)) {
+                    appointmentsByDate.computeIfAbsent(appointmentDate, k -> new ArrayList<>()).add(appointment);
+                } else {
+                    appointmentsByDate.put(appointmentDate, new ArrayList<>(Arrays.asList(appointment)));
+                }
+            });
+            return appointmentsByDate;
+
         } catch (JsonProcessingException | UnsupportedEncodingException e) {
             e.printStackTrace();
             System.out.println(e);
-        } 
-        throw new CorruptedSearchFilterDataException("The received search filter data has been corrupted or has wrong structure.");
+        }
+        throw new CorruptedSearchFilterDataException(
+                "The received search filter data has been corrupted or has wrong structure.");
     }
 
+    public BookingMessageResponse bookFreeTireChangeTime(String id, String address) {
+        loadWorkshops();
+        Optional<Workshop> workshop = workshops.stream().filter(w -> w.getAddress().equals(address)).findFirst();
+
+        if (workshop.isPresent()) {
+            return webService.bookFreeTireChangeTime(id, address, workshop.get());
+        } else {
+            return new BookingMessageResponse("Tekkis viga. Töökoda pole leitud. Palun proovige uuesti hiljem või valige teine töökoda.");
+        }
+    }
 }

@@ -11,10 +11,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dabere.tirechange.app.entities.Workshop;
 
 public class XMLParserTest {
+
+    @Autowired
+    private WorkshopsReader workshopsReader;
 
     private XMLParser xmlParser;
     private String xmlResponse1;
@@ -58,7 +62,7 @@ public class XMLParserTest {
                 "  </availableTime>\n" +
                 "</tireChangeTimesResponse>";
 
-        workshop = WorkshopsReader.main(null).get(1);
+        workshop = workshopsReader.getWorkshopList().get(1);
     }
 
     @Test

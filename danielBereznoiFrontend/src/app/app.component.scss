@@ -16,16 +16,28 @@ footer {
 }
 
 .nav-right {
-    font-size: 1.5rem;
     flex: 1;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.nav-right button {
+    color: white;
+    font-size: 1.5rem;
 }
 
 footer {
     font-size: 1.2rem;
     margin-top: auto;
     margin-bottom: auto;
+    display: flex;
+    @media (min-width: 900px) {
+        flex-direction: row;
+    }
+
+    @media (max-width: 899px) {
+        flex-direction: column;
+    }
 }
 
 .footer-left {
@@ -35,12 +47,14 @@ footer {
 
 .footer-middle {
     flex: 1;
-    align-items: center;
+    @media (min-width: 900px) {
+    align-items: center;}
     margin: inherit;
 }
 
 .footer-right {
     flex: 1;
-    align-items: end;
+    @media (min-width: 900px) {
+    align-items: end;}
     margin: inherit;
 }
