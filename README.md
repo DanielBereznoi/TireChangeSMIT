@@ -35,4 +35,5 @@ Possible backend requests:
     5. Get all vehicle types avaiable in the system
       - Method: GET
       - url: http://localhost:8080/api/workshops/vehicle-types
-        
+
+To run tests on the backend workshop apis must run
